@@ -74,6 +74,11 @@ namespace Xwt.Mac
 			}
 		}
 
+		public override bool CanBecomeKeyView
+		{
+			get { return false; }
+		}
+
 		public override bool AcceptsFirstResponder ()
 		{
 			return Backend.CanGetFocus;

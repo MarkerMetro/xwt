@@ -129,6 +129,20 @@ namespace Xwt.Mac
 			}
 		}
 
+		public bool Enabled {
+			get {
+				var control = ContentView as NSControl;
+				if (control == null)
+					return true;
+				return control.Enabled;
+			}
+			set {
+				var control = ContentView as NSControl;
+				if (control != null)
+					control.Enabled = value;
+			}
+		}
+
 		public double Opacity {
 			get { return AlphaValue; }
 			set { AlphaValue = (float)value; }

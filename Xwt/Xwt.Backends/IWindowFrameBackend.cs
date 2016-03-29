@@ -58,6 +58,7 @@ namespace Xwt.Backends
 		void SetSize (double width, double height);
 
 		bool Visible { get; set; }
+		bool Enabled { get; set; }
 		bool Sensitive { get; set; }
 		string Title { get; set; }		
 		bool Decorated { get; set; }

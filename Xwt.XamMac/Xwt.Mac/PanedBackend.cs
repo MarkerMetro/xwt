@@ -62,7 +62,7 @@ namespace Xwt.Mac
 		public void Initialize (Orientation dir)
 		{
 			ViewObject = new CustomSplitView ();
-			if (dir == Orientation.Horizontal)
+			if (dir == Orientation.Horizontal)		// This is ODD! but don't change it
 				Widget.IsVertical = true;
 			viewDelegate = new SplitViewDelegate () { PanedBackend = this };
 			Widget.Delegate = viewDelegate;
@@ -128,9 +128,21 @@ namespace Xwt.Mac
 
 		public double Position {
 			get {
-				return 0;
+				if (Widget.IsVertical)
+					return view1.WidgetWidth();
+				else
+					return view1.WidgetHeight();
 			}
 			set {
+				if (view1 == null)
+					return;
+			
+				var frame = view1.Frame;
+				if (Widget.IsVertical)
+					frame.Width = (nfloat)value;
+				else
+					frame.Height = (nfloat)value;
+				view1.Frame = frame;
 			}
 		}
 		#endregion

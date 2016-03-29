@@ -318,11 +318,16 @@ namespace Xwt
 		
 		public object GetValue (int row, int column)
 		{
+			if (row < 0) return null;
+			if (column < 0)	return null;
+
 			return list [row][column];
 		}
 
 		public void SetValue (int row, int column, object value)
 		{
+			if (row < 0) return;
+			
 			list [row] [column] = value;
 			if (RowChanged != null)
 				RowChanged (this, new ListRowEventArgs (row));

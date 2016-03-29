@@ -74,7 +74,7 @@ namespace Xwt.Mac
 		public void Popup ()
 		{
 			var evt = NSApplication.SharedApplication.CurrentEvent;
-			NSMenu.PopUpContextMenu (this, evt, evt.Window.ContentView);
+			NSMenu.PopUpContextMenu (this, evt, evt.Window.ContentView, null);
 		}
 		
 		public void Popup (IWidgetBackend widget, double x, double y)

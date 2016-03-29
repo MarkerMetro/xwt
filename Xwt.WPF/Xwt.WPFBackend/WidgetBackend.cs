@@ -247,6 +247,12 @@ namespace Xwt.WPFBackend
 			set { Widget.Visibility = value ? Visibility.Visible : Visibility.Collapsed; }
 		}
 
+        public virtual bool Enabled
+        {
+            get { return Widget.IsEnabled; }
+            set { Widget.IsEnabled = value; }
+        }
+
 		public string TooltipText {
 			get { return Widget.ToolTip == null ? null : ((ToolTip)Widget.ToolTip).Content.ToString (); }
 			set {

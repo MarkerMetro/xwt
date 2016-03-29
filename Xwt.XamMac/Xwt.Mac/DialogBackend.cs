@@ -143,6 +143,7 @@ namespace Xwt.Mac
 			realButton.Image = b.Image;
 			realButton.Sensitive = b.Sensitive;
 			realButton.Visible = b.Visible;
+			realButton.Enabled = b.Enabled;
 		}
 
 		public void RunLoop (IWindowFrameBackend parent)

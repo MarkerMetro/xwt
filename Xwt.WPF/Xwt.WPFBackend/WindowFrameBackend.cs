@@ -177,7 +177,13 @@ namespace Xwt.WPFBackend
 			}
 		}
 
-		bool IWindowFrameBackend.Sensitive
+        bool IWindowFrameBackend.Enabled
+        {
+            get { return window.IsEnabled; }
+            set { window.IsEnabled = value; }
+        }
+
+        bool IWindowFrameBackend.Sensitive
 		{
 			get { return window.IsEnabled; }
 			set { window.IsEnabled = value;	}

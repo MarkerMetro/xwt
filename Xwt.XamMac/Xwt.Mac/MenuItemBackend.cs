@@ -47,7 +47,7 @@ namespace Xwt.Mac
 		List<MenuItemEvent> enabledEvents;
 		ApplicationContext context;
 		string label;
-		bool useMnemonic;
+		bool useMnemonic = true;
 		
 		public MenuItemBackend (): this (new NSMenuItem ())
 		{
@@ -94,7 +94,13 @@ namespace Xwt.Mac
 				Label = label ?? string.Empty;
 			}
 		}
-		
+
+		public string MnemonicChar
+		{
+			get { return item.KeyEquivalent; }
+			set	{ item.KeyEquivalent = value; }
+		}
+
 		public void SetImage (ImageDescription image)
 		{
 			item.Image = image.ToNSImage ();
@@ -108,7 +114,16 @@ namespace Xwt.Mac
 				item.Hidden = !value;
 			}
 		}
-		
+
+		public bool Enabled {
+			get {
+				return item.Enabled;
+			}
+			set {
+				item.Enabled = value;
+			}
+		}
+
 		public bool Sensitive {
 			get {
 				return item.Enabled;

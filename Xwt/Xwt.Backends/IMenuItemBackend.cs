@@ -57,6 +57,12 @@ namespace Xwt.Backends
 		bool UseMnemonic { get; set; }
 
 		/// <summary>
+		/// Gets or sets the mnemonic char.
+		/// </summary>
+		/// <value>The mnemonic char.</value>
+		string MnemonicChar { get; set; }
+
+		/// <summary>
 		/// Gets or sets whether the menu item is enabled.
 		/// </summary>
 		bool Sensitive { get; set; }
@@ -65,6 +71,11 @@ namespace Xwt.Backends
 		/// Gets or sets whether the menu item is visible.
 		/// </summary>
 		bool Visible { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Xwt.Backends.IMenuItemBackend"/> is enabled.
+		/// </summary>
+		bool Enabled { get; set; }
 	}
 	
 	public interface IMenuItemEventSink

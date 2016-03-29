@@ -150,6 +150,27 @@ namespace Xwt.Mac
 			set { Widget.Hidden = !value; }
 		}
 
+		public bool Enabled {
+			get { 
+				var control = Widget as NSControl;
+				if (control == null)
+					return true;
+				return control.Enabled;
+			}
+			set { 
+				EnableSubViews (Widget, value);
+			}
+		}
+
+		public void EnableSubViews(NSView view, bool enable) {
+			var control = view as NSControl;
+			if (control != null)
+				control.Enabled = enable;
+			
+			foreach (var subview in view.Subviews)
+				EnableSubViews (subview, enable);
+		}
+
 		public double Opacity {
 			get { return Widget.AlphaValue; }
 			set { Widget.AlphaValue = (float)value; }

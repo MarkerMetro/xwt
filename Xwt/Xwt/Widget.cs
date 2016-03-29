@@ -540,7 +540,29 @@ namespace Xwt
 				OnPreferredSizeChanged ();
 			}
 		}
-		
+
+		/// <summary>
+		/// Enable this widget.
+		/// </summary>
+		public void Enable ()
+		{
+			Enabled = true;
+		}
+
+		/// <summary>
+		/// Disables this widget.
+		/// </summary>
+		public void Disable ()
+		{
+			Enabled = false;
+		}
+
+		[DefaultValue (true)]
+		public bool Enabled {
+			get { return Backend.Enabled; }
+			set { Backend.Enabled = value; }
+		}
+
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="Xwt.Widget"/> is sensitive.
 		/// </summary>

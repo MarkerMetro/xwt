@@ -162,6 +162,16 @@ namespace Xwt
 			set { visible = value; }
 		}
 
+		bool enabled = true;
+
+		public IDataField<bool> EnabledField { get; set; }
+
+		[DefaultValue (true)]
+		public bool Enabled {
+			get { return GetValue (EnabledField, enabled); }
+			set { enabled = value; }
+		}
+
 		ICellViewEventSink ICellViewFrontend.Load (ICellDataSource dataSource)
 		{
 			DataSource = dataSource;

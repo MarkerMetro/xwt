@@ -26,6 +26,7 @@
 using System;
 using Xwt.Backends;
 using Xwt.Drawing;
+using CoreGraphics;
 
 #if MONOMAC
 using nint = System.Int32;
@@ -48,7 +49,7 @@ namespace Xwt.Mac
 		public override void Initialize ()
 		{
 			base.Initialize ();
-			ViewObject = new CustomNSImageView ();
+			ViewObject = new CustomNSImageView (EventSink, ApplicationContext);
 		}
 
 		protected override Size GetNaturalSize ()
@@ -71,6 +72,16 @@ namespace Xwt.Mac
 	
 	class CustomNSImageView: NSImageView, IViewObject
 	{
+		IWidgetEventSink eventSink;
+		ApplicationContext context;
+		NSTrackingArea trackingArea;	// Captures Mouse Entered, Exited, and Moved events
+
+		public CustomNSImageView(IWidgetEventSink eventSink, ApplicationContext context) 
+		{
+			this.eventSink = eventSink;
+			this.context = context;
+		}
+
 		public NSView View {
 			get {
 				return this;
@@ -84,6 +95,128 @@ namespace Xwt.Mac
 			base.ResetCursorRects ();
 			if (Backend.Cursor != null)
 				AddCursorRect (Bounds, Backend.Cursor);
+		}
+
+		public override void UpdateTrackingAreas ()
+		{
+			if (trackingArea != null) {
+				RemoveTrackingArea (trackingArea);
+				trackingArea.Dispose ();
+			}
+			CGRect viewBounds = this.Bounds;
+			var options = NSTrackingAreaOptions.MouseMoved | NSTrackingAreaOptions.ActiveInKeyWindow | NSTrackingAreaOptions.MouseEnteredAndExited;
+			trackingArea = new NSTrackingArea (viewBounds, options, this, null);
+			AddTrackingArea (trackingArea);
+		}
+
+		public override void RightMouseDown (NSEvent theEvent)
+		{
+			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
+			ButtonEventArgs args = new ButtonEventArgs ();
+			args.X = p.X;
+			args.Y = p.Y;
+			args.Button = PointerButton.Right;
+			context.InvokeUserCode (delegate {
+				eventSink.OnButtonPressed (args);
+			});
+		}
+
+		public override void RightMouseUp (NSEvent theEvent)
+		{
+			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
+			ButtonEventArgs args = new ButtonEventArgs ();
+			args.X = p.X;
+			args.Y = p.Y;
+			args.Button = PointerButton.Right;
+			context.InvokeUserCode (delegate {
+				eventSink.OnButtonReleased (args);
+			});
+		}
+
+		public override void MouseDown (NSEvent theEvent)
+		{
+			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
+			ButtonEventArgs args = new ButtonEventArgs ();
+			args.X = p.X;
+			args.Y = p.Y;
+			args.Button = PointerButton.Left;
+			context.InvokeUserCode (delegate {
+				eventSink.OnButtonPressed (args);
+			});
+		}
+
+		public override void MouseUp (NSEvent theEvent)
+		{
+			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
+			ButtonEventArgs args = new ButtonEventArgs ();
+			args.X = p.X;
+			args.Y = p.Y;
+			args.Button = (PointerButton) (int)theEvent.ButtonNumber + 1;
+			context.InvokeUserCode (delegate {
+				eventSink.OnButtonReleased (args);
+			});
+		}
+
+		public override void MouseEntered (NSEvent theEvent)
+		{
+			context.InvokeUserCode (delegate {
+				eventSink.OnMouseEntered ();
+			});
+		}
+
+		public override void MouseExited (NSEvent theEvent)
+		{
+			context.InvokeUserCode (delegate {
+				eventSink.OnMouseExited ();
+			});
+		}
+
+		public override void MouseMoved (NSEvent theEvent)
+		{
+			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
+			MouseMovedEventArgs args = new MouseMovedEventArgs ((long) TimeSpan.FromSeconds (theEvent.Timestamp).TotalMilliseconds, p.X, p.Y);
+			context.InvokeUserCode (delegate {
+				eventSink.OnMouseMoved (args);
+			});
+		}
+
+		public override void MouseDragged (NSEvent theEvent)
+		{
+			var p = ConvertPointFromView (theEvent.LocationInWindow, null);
+			MouseMovedEventArgs args = new MouseMovedEventArgs ((long) TimeSpan.FromSeconds (theEvent.Timestamp).TotalMilliseconds, p.X, p.Y);
+			context.InvokeUserCode (delegate {
+				eventSink.OnMouseMoved (args);
+			});
+		}
+			
+		public override void KeyDown (NSEvent theEvent)
+		{
+			var keyArgs = theEvent.ToXwtKeyEventArgs ();
+			context.InvokeUserCode (delegate {
+				eventSink.OnKeyPressed (keyArgs);
+			});
+			if (keyArgs.Handled)
+				return;
+
+			var textArgs = new TextInputEventArgs (theEvent.Characters);
+			if (!String.IsNullOrEmpty(theEvent.Characters))
+				context.InvokeUserCode (delegate {
+					eventSink.OnTextInput (textArgs);
+				});
+			if (textArgs.Handled)
+				return;
+
+			base.KeyDown (theEvent);
+		}
+
+		public override void KeyUp (NSEvent theEvent)
+		{
+			var keyArgs = theEvent.ToXwtKeyEventArgs ();
+			context.InvokeUserCode (delegate {
+				eventSink.OnKeyReleased (keyArgs);
+			});
+			if (!keyArgs.Handled)
+				base.KeyUp (theEvent);
 		}
 	}
 }

@@ -51,6 +51,7 @@ namespace Xwt.WPFBackend
 		public MenuItemBackend ()
 			: this (new SWC.MenuItem())
 		{
+            MnemonicChar = "_";
 		}
 
 		protected MenuItemBackend (UIElement item)
@@ -117,7 +118,15 @@ namespace Xwt.WPFBackend
 			set { this.item.Visibility = (value) ? Visibility.Visible : Visibility.Collapsed; }
 		}
 
-		public void SetImage (ImageDescription imageBackend)
+        public bool Enabled
+        {
+            get { return this.item.IsEnabled; }
+            set { this.item.IsEnabled = value; }
+        }
+
+        public string MnemonicChar { get; set; }
+
+        public void SetImage (ImageDescription imageBackend)
 		{
 			if (imageBackend.IsNull)
 				this.menuItem.Icon = null;

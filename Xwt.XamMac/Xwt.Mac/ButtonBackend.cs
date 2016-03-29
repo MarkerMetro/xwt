@@ -203,6 +203,11 @@ namespace Xwt.Mac
 		}
 
 		public ViewBackend Backend { get; set; }
+
+		public override bool CanBecomeKeyView
+		{
+			get { return true; }
+		}
 		
 		public NSView View {
 			get { return this; }

@@ -512,7 +512,7 @@ namespace Xwt
 
 				// If the font instance is a system font, we swap instances
 				// to not corrupt the backend of the singletons
-				if (font.ToolkitEngine != this) {
+				if (font.ToolkitEngine != null) {
 					var fbh = font.ToolkitEngine.FontBackendHandler;
 					if (font == fbh.SystemFont)
 						font = FontBackendHandler.SystemFont;

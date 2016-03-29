@@ -34,6 +34,14 @@ namespace Xwt.WPFBackend
 		public CheckboxMenuItemBackend()
 		{
 			MenuItem.IsCheckable = true;
+            MnemonicChar = "_";
 		}
-	}
+
+        /// <summary>
+        /// Gets or sets the mnemonic char.
+        /// </summary>
+        /// <value>The mnemonic char.</value>
+        public string MnemonicChar { get; set; }
+
+    }
 }

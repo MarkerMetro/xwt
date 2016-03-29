@@ -51,6 +51,7 @@
 // THE SOFTWARE.
 using System;
 using Xwt.Backends;
+using Foundation;
 
 #if MONOMAC
 using nint = System.Int32;
@@ -82,6 +83,14 @@ namespace Xwt.Mac
 				Widget.SynchronizeTitleAndSelectedItem ();
 				ResetFittingSize ();
 			};
+			NSNotificationCenter.DefaultCenter.AddObserver ((NSString)"NSPopUpButtonWillPopUpNotification", WillPopUpNotification, Widget);
+		}
+
+		void WillPopUpNotification (NSNotification notif)
+		{
+			ApplicationContext.InvokeUserCode (delegate {
+				EventSink.OnGotFocus ();
+			});
 		}
 
 		#region IComboBoxBackend implementation
@@ -203,6 +212,11 @@ namespace Xwt.Mac
 		}
 
 		public ViewBackend Backend { get; set; }
+
+		public override bool CanBecomeKeyView
+		{
+			get { return true; }
+		}
 
 		public override void ResetCursorRects ()
 		{

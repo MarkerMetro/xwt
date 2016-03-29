@@ -58,6 +58,12 @@ namespace Xwt.Backends
 		bool Visible { get; set; }
 
 		/// <summary>
+		/// Gets or sets a value indicating whether this <see cref="Xwt.Backends.IWidgetBackend"/> is enabled.
+		/// </summary>
+		/// <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
+		bool Enabled { get; set; }
+
+		/// <summary>
 		/// Gets or sets a value indicating whether this widget is sensitive/enabled.
 		/// </summary>
 		/// <value><c>true</c> if sensitive; otherwise, <c>false</c>.</value>

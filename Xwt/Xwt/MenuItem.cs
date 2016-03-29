@@ -76,10 +76,12 @@ namespace Xwt
 			LoadCommandProperties (command);
 		}
 		
-		public MenuItem (string label)
+		public MenuItem (string label, string mnemonicChar = null)
 		{
 			VerifyConstructorCall (this);
 			Label = label;
+			if (mnemonicChar != null)
+				MnemonicChar = mnemonicChar;
 		}
 
 		protected void LoadCommandProperties (Command command)
@@ -123,6 +125,11 @@ namespace Xwt
 				Backend.UseMnemonic = value;
 			}
 		}
+
+		public string MnemonicChar {
+			get { return Backend.MnemonicChar; }
+			set { Backend.MnemonicChar = value; }
+		}
 		
 		[DefaultValue (true)]
 		public bool Sensitive {
@@ -135,7 +142,13 @@ namespace Xwt
 			get { return Backend.Visible; }
 			set { Backend.Visible = value; }
 		}
-		
+
+		[DefaultValue (true)]
+		public bool Enabled {
+			get { return Backend.Enabled; }
+			set { Backend.Enabled = value; }
+		}
+
 		public Image Image {
 			get { return image; }
 			set {

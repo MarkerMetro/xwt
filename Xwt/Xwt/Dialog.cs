@@ -190,6 +190,7 @@ namespace Xwt
 		string label;
 		Image image;
 		bool visible = true;
+		bool enabled = true;
 		bool sensitive = true;
 		internal Dialog ParentDialog;
 		
@@ -265,7 +266,17 @@ namespace Xwt
 				}
 			}
 		}
-		
+
+		public bool Enabled { 
+			get { return enabled; }
+			set {
+				enabled = value;
+				if (ParentDialog != null) {
+					ParentDialog.UpdateButton (this);
+				}
+			}
+		}
+
 		public bool Sensitive { 
 			get { return sensitive; }
 			set {
